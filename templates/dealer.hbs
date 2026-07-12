@@ -26,11 +26,16 @@
       <h3>{{localize "CARTESCATS.Participants"}}</h3>
       <ul class="cc-player-list">
         {{#each participants}}
-        <li class="cc-player" draggable="true" data-user-id="{{this.id}}">
-          <img src="{{this.avatar}}" alt="" />
-          <span>{{this.name}}</span>
-          <input type="number" class="cc-participant-count" min="1" value="{{this.count}}" data-user-id="{{this.id}}" title="{{localize 'CARTESCATS.CardsPerPlayer'}}" />
-          {{#if this.cardCount}}<span class="cc-recap-badge">{{this.cardCount}}</span>{{/if}}
+        <li class="cc-player cc-participant" draggable="true" data-user-id="{{this.id}}">
+          <div class="cc-player-row">
+            <img src="{{this.avatar}}" alt="" />
+            <span>{{this.name}}</span>
+            <input type="number" class="cc-participant-count" min="1" value="{{this.count}}" data-user-id="{{this.id}}" title="{{localize 'CARTESCATS.CardsPerPlayer'}}" />
+            {{#if this.cardCount}}<span class="cc-recap-badge">{{this.cardCount}}</span>{{/if}}
+          </div>
+          {{#if this.cardNames}}
+          <div class="cc-participant-hand">{{this.cardNames}}</div>
+          {{/if}}
         </li>
         {{/each}}
       </ul>

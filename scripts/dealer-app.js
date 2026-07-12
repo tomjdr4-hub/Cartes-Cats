@@ -1,5 +1,5 @@
 import { MODULE_ID } from "./constants.js";
-import { CARD_BACK } from "./deck-data.js";
+import { CARD_BACK, getCardDef } from "./deck-data.js";
 import { getState, getHand, resetDeck, shuffleDrawPile, dealCards } from "./deck-state.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -47,11 +47,15 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
       avatar: u.avatar || "icons/svg/mystery-man.svg",
       active: u.active
     });
-    const toParticipantEntry = u => ({
-      ...toEntry(u),
-      count: this.participantCounts.get(u.id) ?? 1,
-      cardCount: getHand(u.id).length
-    });
+    const toParticipantEntry = u => {
+      const hand = getHand(u.id);
+      return {
+        ...toEntry(u),
+        count: this.participantCounts.get(u.id) ?? 1,
+        cardCount: hand.length,
+        cardNames: hand.map(c => getCardDef(c.cardId)?.name ?? c.cardId).join(", ")
+      };
+    };
 
     return {
       cardBack: CARD_BACK,

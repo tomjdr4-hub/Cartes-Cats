@@ -118,6 +118,24 @@
   border: none;
 }
 
+.cartes-cats-dealer .cc-participant {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.cartes-cats-dealer .cc-player-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cartes-cats-dealer .cc-participant-hand {
+  padding-left: 30px;
+  font-size: 0.78rem;
+  font-style: italic;
+  opacity: 0.75;
+}
+
 .cartes-cats-dealer .cc-participant-count {
   width: 3.2em;
   margin-left: auto;

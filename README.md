@@ -11,7 +11,7 @@ Le paquet et la pioche sont gérés **entièrement par le module** (réglage de 
 - Nombre de cartes à distribuer réglable **individuellement pour chaque participant**.
 - Animation de mélange à l'écran (avec le vrai visuel du verso) avant la distribution réelle.
 - Compteur de cartes restantes dans la pioche + bouton pour réinitialiser/remélanger le paquet complet.
-- Récapitulatif (nombre de cartes reçues par participant) visible dans la fenêtre du MJ.
+- Récapitulatif visible dans la fenêtre du MJ : nombre de cartes reçues par participant, et **le nom de chaque carte en sa possession** juste sous son nom.
 - Popup "Ma main" ouverte par le joueur via un mini-visuel de carte flottant, ancré au-dessus de la liste des joueurs (badge du nombre de cartes en main) — pas de dépendance à un onglet de la sidebar. Raccourci `Ctrl+Shift+M` disponible aussi.
 - Bouton **Utiliser** sur chaque carte de la main : défausse la carte et annonce son usage dans le chat.
 - Dernière configuration (participants, nombre de cartes par joueur) sauvegardée par monde.
