@@ -1,6 +1,6 @@
 import { MODULE_ID } from "./constants.js";
 import { CARD_BACK } from "./deck-data.js";
-import { getState, resetDeck, shuffleDrawPile, dealCards } from "./deck-state.js";
+import { getState, getHand, resetDeck, shuffleDrawPile, dealCards } from "./deck-state.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -50,7 +50,7 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     const toParticipantEntry = u => ({
       ...toEntry(u),
       count: this.participantCounts.get(u.id) ?? 1,
-      cardCount: (state.hands[u.id] ?? []).length
+      cardCount: getHand(u.id).length
     });
 
     return {
@@ -143,17 +143,21 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     }
 
     const distribution = {};
+    let requestedTotal = 0;
     for (const id of this.participantIds) {
-      distribution[id] = this.participantCounts.get(id) ?? 1;
+      const count = this.participantCounts.get(id) ?? 1;
+      distribution[id] = count;
+      requestedTotal += count;
     }
 
-    const dealt = await dealCards(distribution);
-    const requestedTotal = Object.values(distribution).reduce((a, b) => a + b, 0);
-    const dealtTotal = Object.values(dealt).reduce((a, b) => a + b, 0);
+    const remaining = getState().drawPile.length;
+    if (requestedTotal > remaining) {
+      ui.notifications.warn(game.i18n.format("CARTESCATS.NotEnoughCards", { requested: requestedTotal, remaining }));
+      return;
+    }
 
+    await dealCards(distribution);
     ui.notifications.info(game.i18n.format("CARTESCATS.Dealt", { n: this.participantIds.size }));
-    if (dealtTotal < requestedTotal) ui.notifications.warn(game.i18n.localize("CARTESCATS.PileTooShort"));
-
     this.render();
   }
 

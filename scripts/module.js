@@ -3,7 +3,6 @@ import { CartesCatsDealer } from "./dealer-app.js";
 import { CartesCatsHandApp } from "./hand-app.js";
 import { ensureInitialized, getHand, getState } from "./deck-state.js";
 import { CARD_BACK } from "./deck-data.js";
-import { registerSocketHandlers } from "./socket.js";
 
 const DECK_STATE_KEY = `${MODULE_ID}.deckState`;
 
@@ -67,7 +66,7 @@ Hooks.once("init", () => {
     scope: "world",
     config: false,
     type: Object,
-    default: { drawPile: [], hands: {} }
+    default: { drawPile: [] }
   });
 
   game.settings.register(MODULE_ID, "lastConfig", {
@@ -101,7 +100,6 @@ Hooks.once("ready", () => {
   const api = { openDealer, openHand };
   game.modules.get(MODULE_ID).api = api;
 
-  registerSocketHandlers();
   if (game.user.isGM) ensureInitialized();
 
   createHandWidget();
@@ -124,9 +122,18 @@ Hooks.on("renderCardsDirectory", (_app, html) => {
 Hooks.on("renderPlayerList", () => positionHandWidget());
 window.addEventListener("resize", () => positionHandWidget());
 
-Hooks.on("updateSetting", setting => {
-  if (setting.key !== DECK_STATE_KEY) return;
+function refreshUI() {
   if (dealerApp?.rendered) dealerApp.render();
   if (handApp?.rendered) handApp.render();
   updateHandWidgetBadge();
+}
+
+Hooks.on("updateSetting", setting => {
+  if (setting.key !== DECK_STATE_KEY) return;
+  refreshUI();
+});
+
+Hooks.on("updateUser", (_user, changes) => {
+  if (!("flags" in changes) || !(MODULE_ID in (changes.flags ?? {}))) return;
+  refreshUI();
 });

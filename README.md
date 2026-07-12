@@ -2,7 +2,7 @@
 
 Module Foundry VTT (v13/v14) qui ajoute un espace MJ pour mélanger un paquet de cartes et le distribuer aux joueurs présents, avec sélection des participants par glisser-déposer.
 
-Le paquet, la pioche, le mélange et les mains des joueurs sont gérés **entièrement par le module** (via ses propres réglages de monde) : aucune dépendance au système "Cards" natif de Foundry.
+Le paquet et la pioche sont gérés **entièrement par le module** (réglage de monde) et la main de chaque joueur est stockée comme un flag sur son propre compte utilisateur (chacun a le droit d'écrire le sien, aucun relais MJ n'est nécessaire) : aucune dépendance au système "Cards" natif de Foundry.
 
 ## Fonctionnalités
 
@@ -38,10 +38,8 @@ https://github.com/tomjdr4-hub/Cartes-Cats/releases/latest/download/module.json
 
 1. Ouvrez la fenêtre de distribution (bouton dans l'onglet Cartes, ou `Ctrl+Shift+C`).
 2. Glissez les joueurs présents dans "Participants", réglez le nombre de cartes pour chacun.
-3. Cliquez sur **Mélanger** puis sur **Distribuer**.
-4. Chaque joueur clique sur le mini-visuel de carte flottant (au-dessus de la liste des joueurs) pour voir ses cartes reçues, et clique sur **Utiliser** pour défausser une carte après l'avoir jouée.
-
-> Seul le MJ peut écrire l'état du paquet (permissions Foundry). Le clic "Utiliser" d'un joueur passe donc par un message socket relayé au MJ actif : **un MJ doit être connecté** pour que l'action soit prise en compte.
+3. Cliquez sur **Mélanger** puis sur **Distribuer** (bloqué avec un avertissement si le total demandé dépasse le nombre de cartes restantes dans la pioche).
+4. Chaque joueur clique sur le mini-visuel de carte flottant (au-dessus de la liste des joueurs) pour voir ses cartes reçues, et clique sur **Utiliser** pour défausser une carte après l'avoir jouée (uniquement si la carte l'exige).
 
 ## Versions
 

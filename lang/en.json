@@ -15,7 +15,7 @@
     "Shuffle": "Shuffle",
     "Deal": "Deal",
     "NoParticipants": "Drag at least one player into the participants.",
-    "PileTooShort": "There weren't enough cards left in the deck to deal the requested amount to everyone.",
+    "NotEnoughCards": "You'd need {requested} card(s) but only {remaining} are left in the deck. Lower the amounts or reset the deck.",
     "Shuffled": "The deck has been shuffled.",
     "Dealt": "Cards dealt to {n} player(s).",
     "MyHandTitle": "My hand",

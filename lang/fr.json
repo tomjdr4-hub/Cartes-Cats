@@ -15,7 +15,7 @@
     "Shuffle": "Mélanger",
     "Deal": "Distribuer",
     "NoParticipants": "Faites glisser au moins un joueur dans les participants.",
-    "PileTooShort": "Il ne restait pas assez de cartes dans le paquet pour distribuer le nombre demandé à tout le monde.",
+    "NotEnoughCards": "Il faudrait {requested} carte(s) mais il n'en reste que {remaining} dans le paquet. Réduisez les quantités ou réinitialisez le paquet.",
     "Shuffled": "Le paquet a été mélangé.",
     "Dealt": "Cartes distribuées à {n} joueur(s).",
     "MyHandTitle": "Ma main",

@@ -17,16 +17,23 @@ function shuffleArray(arr) {
   return arr;
 }
 
+function hasAnyHands() {
+  return game.users.some(u => (u.getFlag(MODULE_ID, "hand") ?? []).length > 0);
+}
+
 export async function ensureInitialized() {
   const state = getState();
-  if (state.drawPile.length === 0 && Object.keys(state.hands).length === 0) {
+  if (state.drawPile.length === 0 && !hasAnyHands()) {
     await resetDeck();
   }
 }
 
 export async function resetDeck() {
   const pile = shuffleArray(buildFreshPile());
-  await setState({ drawPile: pile, hands: {} });
+  await setState({ drawPile: pile });
+  for (const user of game.users) {
+    if ((user.getFlag(MODULE_ID, "hand") ?? []).length) await user.unsetFlag(MODULE_ID, "hand");
+  }
 }
 
 export async function shuffleDrawPile() {
@@ -39,9 +46,11 @@ export async function dealCards(distribution) {
   const state = getState();
   const dealt = {};
   for (const [userId, count] of Object.entries(distribution)) {
-    const hand = state.hands[userId] ?? (state.hands[userId] = []);
+    const user = game.users.get(userId);
+    if (!user) continue;
+    const hand = user.getFlag(MODULE_ID, "hand") ?? [];
     const taken = state.drawPile.splice(0, count);
-    hand.push(...taken);
+    await user.setFlag(MODULE_ID, "hand", [...hand, ...taken]);
     dealt[userId] = taken.length;
   }
   await setState(state);
@@ -49,12 +58,12 @@ export async function dealCards(distribution) {
 }
 
 export async function discardCard(userId, instanceId) {
-  const state = getState();
-  const hand = state.hands[userId] ?? [];
-  state.hands[userId] = hand.filter(c => c.instanceId !== instanceId);
-  await setState(state);
+  const user = game.users.get(userId);
+  if (!user) return;
+  const hand = user.getFlag(MODULE_ID, "hand") ?? [];
+  await user.setFlag(MODULE_ID, "hand", hand.filter(c => c.instanceId !== instanceId));
 }
 
 export function getHand(userId) {
-  return getState().hands[userId] ?? [];
+  return game.users.get(userId)?.getFlag(MODULE_ID, "hand") ?? [];
 }
