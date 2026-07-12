@@ -1,6 +1,7 @@
 import { MODULE_ID } from "./constants.js";
 import { getCardDef } from "./deck-data.js";
-import { getHand, discardCard } from "./deck-state.js";
+import { getHand } from "./deck-state.js";
+import { requestDiscard } from "./socket.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -39,7 +40,7 @@ export class CartesCatsHandApp extends HandlebarsApplicationMixin(ApplicationV2)
     if (!card) return;
 
     const def = getCardDef(card.cardId);
-    await discardCard(game.user.id, instanceId);
+    await requestDiscard(instanceId);
 
     ChatMessage.create({
       content: game.i18n.format("CARTESCATS.UsedCard", { name: game.user.name, card: def?.name ?? card.cardId }),

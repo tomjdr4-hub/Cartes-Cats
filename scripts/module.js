@@ -3,6 +3,7 @@ import { CartesCatsDealer } from "./dealer-app.js";
 import { CartesCatsHandApp } from "./hand-app.js";
 import { ensureInitialized, getHand } from "./deck-state.js";
 import { CARD_BACK } from "./deck-data.js";
+import { registerSocketHandlers } from "./socket.js";
 
 const DECK_STATE_KEY = `${MODULE_ID}.deckState`;
 
@@ -100,6 +101,7 @@ Hooks.once("ready", () => {
   const api = { openDealer, openHand };
   game.modules.get(MODULE_ID).api = api;
 
+  registerSocketHandlers();
   if (game.user.isGM) ensureInitialized();
 
   createHandWidget();

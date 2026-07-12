@@ -41,6 +41,8 @@ https://github.com/tomjdr4-hub/Cartes-Cats/releases/latest/download/module.json
 3. Cliquez sur **Mélanger** puis sur **Distribuer**.
 4. Chaque joueur clique sur le mini-visuel de carte flottant (au-dessus de la liste des joueurs) pour voir ses cartes reçues, et clique sur **Utiliser** pour défausser une carte après l'avoir jouée.
 
+> Seul le MJ peut écrire l'état du paquet (permissions Foundry). Le clic "Utiliser" d'un joueur passe donc par un message socket relayé au MJ actif : **un MJ doit être connecté** pour que l'action soit prise en compte.
+
 ## Versions
 
 Une nouvelle version (numéro de patch incrémenté) et une release GitHub (avec `module.zip` et `module.json`) sont générées automatiquement à chaque modification poussée sur `main`.
