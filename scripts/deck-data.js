@@ -84,7 +84,7 @@ export const CARD_DEFINITIONS = [
     id: "faveurdue",
     name: "Faveur due",
     img: `modules/${MODULE_ID}/assets/cards/faveur-due.png`,
-    count: 1,
+    count: 2,
     discardOnUse: true
   }
 ];

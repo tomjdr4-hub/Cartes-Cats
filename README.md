@@ -32,7 +32,7 @@ Le contenu du paquet est défini dans [scripts/deck-data.js](scripts/deck-data.j
 - **Même pas mal !** — 2 exemplaires
 - **C'est pas moi, c'est lui !** — 1 exemplaire
 - **Retournement de situation** — 1 exemplaire
-- **Faveur due** — 1 exemplaire
+- **Faveur due** — 2 exemplaires
 
 Pour ajouter de nouvelles cartes, il suffit de déposer les visuels dans `assets/cards/` et d'ajouter une entrée dans `CARD_DEFINITIONS`.
 
