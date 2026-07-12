@@ -86,6 +86,69 @@ export const CARD_DEFINITIONS = [
     img: `modules/${MODULE_ID}/assets/cards/faveur-due.png`,
     count: 2,
     discardOnUse: true
+  },
+  {
+    id: "moidabord",
+    name: "Moi d'abord !",
+    img: `modules/${MODULE_ID}/assets/cards/moi-dabord.png`,
+    count: 1,
+    discardOnUse: true
+  },
+  {
+    id: "chatninja",
+    name: "Chat ninja",
+    img: `modules/${MODULE_ID}/assets/cards/chat-ninja.png`,
+    count: 2,
+    discardOnUse: true
+  },
+  {
+    id: "yogifelin",
+    name: "Yogi félin",
+    img: `modules/${MODULE_ID}/assets/cards/yogi-felin.png`,
+    count: 1,
+    discardOnUse: true
+  },
+  {
+    id: "matoudesrues",
+    name: "Matou des rues",
+    img: `modules/${MODULE_ID}/assets/cards/matou-des-rues.png`,
+    count: 2,
+    discardOnUse: true
+  },
+  {
+    id: "essayeencore",
+    name: "Essaye encore !",
+    img: `modules/${MODULE_ID}/assets/cards/essaye-encore.png`,
+    count: 2,
+    discardOnUse: true
+  },
+  {
+    id: "amoreamore",
+    name: "Amore, amore...",
+    img: `modules/${MODULE_ID}/assets/cards/amore-amore.png`,
+    count: 1,
+    discardOnUse: true
+  },
+  {
+    id: "tropsimple",
+    name: "Trop simple !",
+    img: `modules/${MODULE_ID}/assets/cards/trop-simple.png`,
+    count: 2,
+    discardOnUse: true
+  },
+  {
+    id: "aubaine",
+    name: "Aubaine",
+    img: `modules/${MODULE_ID}/assets/cards/aubaine.png`,
+    count: 2,
+    discardOnUse: false
+  },
+  {
+    id: "handicap",
+    name: "Handicap",
+    img: `modules/${MODULE_ID}/assets/cards/handicap.png`,
+    count: 2,
+    discardOnUse: false
   }
 ];
 

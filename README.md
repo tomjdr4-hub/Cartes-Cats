@@ -33,6 +33,15 @@ Le contenu du paquet est défini dans [scripts/deck-data.js](scripts/deck-data.j
 - **C'est pas moi, c'est lui !** — 1 exemplaire
 - **Retournement de situation** — 1 exemplaire
 - **Faveur due** — 2 exemplaires
+- **Moi d'abord !** — 1 exemplaire
+- **Chat ninja** — 2 exemplaires
+- **Yogi félin** — 1 exemplaire
+- **Matou des rues** — 2 exemplaires
+- **Essaye encore !** — 2 exemplaires
+- **Amore, amore...** — 1 exemplaire
+- **Trop simple !** — 2 exemplaires
+- **Aubaine** — 2 exemplaires (ne se défausse pas à l'usage)
+- **Handicap** — 2 exemplaires (ne se défausse pas à l'usage)
 
 Pour ajouter de nouvelles cartes, il suffit de déposer les visuels dans `assets/cards/` et d'ajouter une entrée dans `CARD_DEFINITIONS`.
 
@@ -57,4 +66,4 @@ Une nouvelle version (numéro de patch incrémenté) et une release GitHub (avec
 
 ## Statut
 
-Mécanique indépendante fonctionnelle (pioche, mélange, distribution par joueur, récapitulatif MJ, main persistante par joueur, défausse à l'usage) avec 12 cartes réelles + verso. D'autres cartes pourront être ajoutées au fur et à mesure des visuels fournis.
+Mécanique indépendante fonctionnelle (pioche, mélange, distribution par joueur, récapitulatif MJ, main persistante par joueur, défausse à l'usage) avec 21 cartes réelles + verso. D'autres cartes pourront être ajoutées au fur et à mesure des visuels fournis.
