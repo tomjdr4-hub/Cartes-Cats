@@ -7,13 +7,15 @@ export const CARD_DEFINITIONS = [
     id: "coupdbol",
     name: "Coup d'bol",
     img: `modules/${MODULE_ID}/assets/cards/coupdbol.png`,
-    count: 3
+    count: 3,
+    discardOnUse: true
   },
   {
     id: "pasdbol",
     name: "Pas d'bol",
     img: `modules/${MODULE_ID}/assets/cards/pasdbol.png`,
-    count: 3
+    count: 3,
+    discardOnUse: true
   }
 ];
 

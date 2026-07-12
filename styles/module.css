@@ -287,3 +287,22 @@
 .cartes-cats-hand .cc-hand-card button {
   width: 100%;
 }
+
+.cartes-cats-chat-card {
+  text-align: center;
+}
+
+.cartes-cats-chat-card img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid #d4af37;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.35rem;
+}
+
+.cartes-cats-chat-card p {
+  margin: 0;
+  font-style: italic;
+}

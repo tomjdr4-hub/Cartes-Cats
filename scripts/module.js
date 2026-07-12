@@ -1,7 +1,7 @@
 import { MODULE_ID } from "./constants.js";
 import { CartesCatsDealer } from "./dealer-app.js";
 import { CartesCatsHandApp } from "./hand-app.js";
-import { ensureInitialized, getHand } from "./deck-state.js";
+import { ensureInitialized, getHand, getState } from "./deck-state.js";
 import { CARD_BACK } from "./deck-data.js";
 import { registerSocketHandlers } from "./socket.js";
 
@@ -29,9 +29,9 @@ function createHandWidget() {
 
   const widget = document.createElement("div");
   widget.id = "cartes-cats-hand-widget";
-  widget.title = game.i18n.localize("CARTESCATS.MyHandTitle");
+  widget.title = game.i18n.localize(game.user.isGM ? "CARTESCATS.OpenDealer" : "CARTESCATS.MyHandTitle");
   widget.innerHTML = `<img src="${CARD_BACK}" alt="" /><span class="cc-widget-badge" hidden></span>`;
-  widget.addEventListener("click", () => openHand());
+  widget.addEventListener("click", () => (game.user.isGM ? openDealer() : openHand()));
   document.body.append(widget);
 
   positionHandWidget();
@@ -57,7 +57,7 @@ function updateHandWidgetBadge() {
   const widget = document.getElementById("cartes-cats-hand-widget");
   if (!widget) return;
   const badge = widget.querySelector(".cc-widget-badge");
-  const count = getHand(game.user.id).length;
+  const count = game.user.isGM ? getState().drawPile.length : getHand(game.user.id).length;
   badge.textContent = count;
   badge.hidden = count === 0;
 }

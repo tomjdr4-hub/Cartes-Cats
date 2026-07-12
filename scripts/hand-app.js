@@ -40,10 +40,17 @@ export class CartesCatsHandApp extends HandlebarsApplicationMixin(ApplicationV2)
     if (!card) return;
 
     const def = getCardDef(card.cardId);
-    await requestDiscard(instanceId);
+    const cardName = def?.name ?? card.cardId;
+
+    if (def?.discardOnUse) await requestDiscard(instanceId);
 
     ChatMessage.create({
-      content: game.i18n.format("CARTESCATS.UsedCard", { name: game.user.name, card: def?.name ?? card.cardId }),
+      content: `
+        <div class="cartes-cats-chat-card">
+          <img src="${def?.img ?? ""}" alt="${cardName}" />
+          <p>${game.i18n.format("CARTESCATS.UsedCard", { name: game.user.name, card: cardName })}</p>
+        </div>
+      `,
       speaker: ChatMessage.getSpeaker({ user: game.user })
     });
 
