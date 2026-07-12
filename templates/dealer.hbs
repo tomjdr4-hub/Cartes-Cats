@@ -1,15 +1,13 @@
 <div class="cartes-cats-dealer">
-  {{#if noDeck}}
-  <p class="cc-warning">{{localize "CARTESCATS.NoDeckInWorld"}}</p>
-  {{/if}}
-
-  <div class="cc-row cc-deck-select">
-    <label>{{localize "CARTESCATS.Deck"}}</label>
-    <select name="deckId">
-      {{#each decks}}
-      <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
-      {{/each}}
-    </select>
+  <div class="cc-row cc-deck-info">
+    <div class="cc-pile" style="background-image:url('{{cardBack}}')">
+      <span class="cc-pile-count">{{remaining}}</span>
+    </div>
+    <div class="cc-deck-meta">
+      <strong>{{localize "CARTESCATS.DeckName"}}</strong>
+      <span class="cc-remaining-label">{{localize "CARTESCATS.RemainingCards"}} : {{remaining}}</span>
+      <button type="button" data-action="reset"><i class="fa-solid fa-rotate"></i> {{localize "CARTESCATS.ResetDeck"}}</button>
+    </div>
   </div>
 
   <div class="cc-row cc-count">
@@ -33,7 +31,7 @@
       <h3>{{localize "CARTESCATS.Participants"}}</h3>
       <ul class="cc-player-list">
         {{#each participants}}
-        <li class="cc-player" draggable="true" data-user-id="{{this.id}}" title="{{this.cardNames}}">
+        <li class="cc-player" draggable="true" data-user-id="{{this.id}}">
           <img src="{{this.avatar}}" alt="" />
           <span>{{this.name}}</span>
           {{#if this.cardCount}}<span class="cc-recap-badge">{{this.cardCount}}</span>{{/if}}
@@ -46,10 +44,10 @@
   <p class="cc-hint">{{localize "CARTESCATS.DragHint"}}</p>
 
   <div class="cc-shuffle-stage" hidden>
-    <div class="cc-card cc-card-1"></div>
-    <div class="cc-card cc-card-2"></div>
-    <div class="cc-card cc-card-3"></div>
-    <div class="cc-card cc-card-4"></div>
+    <div class="cc-card cc-card-1" style="background-image:url('{{cardBack}}')"></div>
+    <div class="cc-card cc-card-2" style="background-image:url('{{cardBack}}')"></div>
+    <div class="cc-card cc-card-3" style="background-image:url('{{cardBack}}')"></div>
+    <div class="cc-card cc-card-4" style="background-image:url('{{cardBack}}')"></div>
   </div>
 
   <footer class="cc-actions">

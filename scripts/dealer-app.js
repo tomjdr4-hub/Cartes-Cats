@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./constants.js";
-import { findHand, getOrCreateHand } from "./hand-utils.js";
+import { CARD_BACK } from "./deck-data.js";
+import { getState, resetDeck, shuffleDrawPile, dealCards } from "./deck-state.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -15,7 +16,8 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     position: { width: 560, height: "auto" },
     actions: {
       shuffle: CartesCatsDealer.#onShuffle,
-      deal: CartesCatsDealer.#onDeal
+      deal: CartesCatsDealer.#onDeal,
+      reset: CartesCatsDealer.#onReset
     }
   };
 
@@ -26,20 +28,12 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
   constructor(options = {}) {
     super(options);
     const saved = game.settings.get(MODULE_ID, "lastConfig");
-    this.deckId = saved.deckId ?? null;
     this.count = saved.count ?? 1;
     this.participantIds = new Set(saved.participantIds ?? []);
   }
 
-  get decks() {
-    return game.cards.filter(c => c.type === "deck");
-  }
-
   async _prepareContext(_options) {
-    const decks = this.decks;
-    if (!this.deckId || !decks.some(d => d.id === this.deckId)) {
-      this.deckId = decks[0]?.id ?? null;
-    }
+    const state = getState();
 
     const users = game.users.filter(u => !u.isGM);
     const available = users.filter(u => !this.participantIds.has(u.id));
@@ -50,33 +44,23 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
       avatar: u.avatar || "icons/svg/mystery-man.svg",
       active: u.active
     });
-    const toParticipantEntry = u => {
-      const hand = findHand(u.id);
-      const cards = hand?.cards?.contents ?? [];
-      return {
-        ...toEntry(u),
-        cardCount: cards.length,
-        cardNames: cards.map(c => c.name).join(", ")
-      };
-    };
+    const toParticipantEntry = u => ({
+      ...toEntry(u),
+      cardCount: (state.hands[u.id] ?? []).length
+    });
 
     return {
-      decks: decks.map(d => ({ id: d.id, name: d.name, selected: d.id === this.deckId })),
+      cardBack: CARD_BACK,
+      remaining: state.drawPile.length,
       count: this.count,
       available: available.map(toEntry),
-      participants: participants.map(toParticipantEntry),
-      noDeck: decks.length === 0
+      participants: participants.map(toParticipantEntry)
     };
   }
 
   _onRender(context, options) {
     super._onRender(context, options);
     const root = this.element;
-
-    root.querySelector("select[name=deckId]")?.addEventListener("change", ev => {
-      this.deckId = ev.target.value;
-      this.#persist();
-    });
 
     root.querySelector("input[name=count]")?.addEventListener("change", ev => {
       this.count = Math.max(1, Number(ev.target.value) || 1);
@@ -112,26 +96,19 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
 
   #persist() {
     game.settings.set(MODULE_ID, "lastConfig", {
-      deckId: this.deckId,
       count: this.count,
       participantIds: Array.from(this.participantIds)
     });
   }
 
   static async #onShuffle(_event, _target) {
-    const deck = game.cards.get(this.deckId);
-    if (!deck) {
-      ui.notifications.warn(game.i18n.localize("CARTESCATS.NoDeckSelected"));
-      return;
-    }
-
     const stage = this.element.querySelector(".cc-shuffle-stage");
     if (stage) {
       stage.hidden = false;
       stage.classList.add("cc-shuffling");
     }
 
-    await deck.shuffle();
+    await shuffleDrawPile();
     await new Promise(resolve => setTimeout(resolve, 900));
 
     if (stage) {
@@ -139,30 +116,34 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
       stage.hidden = true;
     }
 
-    ui.notifications.info(game.i18n.format("CARTESCATS.Shuffled", { deck: deck.name }));
+    ui.notifications.info(game.i18n.localize("CARTESCATS.Shuffled"));
   }
 
   static async #onDeal(_event, _target) {
-    const deck = game.cards.get(this.deckId);
-    if (!deck) {
-      ui.notifications.warn(game.i18n.localize("CARTESCATS.NoDeckSelected"));
-      return;
-    }
     if (!this.participantIds.size) {
       ui.notifications.warn(game.i18n.localize("CARTESCATS.NoParticipants"));
       return;
     }
 
-    const hands = [];
-    for (const userId of this.participantIds) {
-      const user = game.users.get(userId);
-      if (!user) continue;
-      hands.push(await getOrCreateHand(user));
-    }
-    if (!hands.length) return;
+    const dealt = await dealCards(Array.from(this.participantIds), this.count);
+    const totalDealt = Object.values(dealt).reduce((a, b) => a + b, 0);
+    const short = totalDealt < this.count * this.participantIds.size;
 
-    await deck.deal(hands, this.count, { how: CONST.CARD_DRAW_MODE.TOP });
-    ui.notifications.info(game.i18n.format("CARTESCATS.Dealt", { count: this.count, n: hands.length }));
+    ui.notifications.info(game.i18n.format("CARTESCATS.Dealt", { count: this.count, n: this.participantIds.size }));
+    if (short) ui.notifications.warn(game.i18n.localize("CARTESCATS.PileTooShort"));
+
+    this.render();
+  }
+
+  static async #onReset(_event, _target) {
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("CARTESCATS.ResetDeck") },
+      content: `<p>${game.i18n.localize("CARTESCATS.ResetDeckConfirm")}</p>`
+    });
+    if (!confirmed) return;
+
+    await resetDeck();
+    ui.notifications.info(game.i18n.localize("CARTESCATS.DeckReset"));
     this.render();
   }
 }

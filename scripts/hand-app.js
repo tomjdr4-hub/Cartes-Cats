@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./constants.js";
-import { findHand, cardImage } from "./hand-utils.js";
+import { getCardDef } from "./deck-data.js";
+import { getHand } from "./deck-state.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -19,13 +20,13 @@ export class CartesCatsHandApp extends HandlebarsApplicationMixin(ApplicationV2)
   };
 
   async _prepareContext(_options) {
-    const hand = findHand(game.user.id);
-    const cards = hand?.cards?.contents ?? [];
-    const sorted = [...cards].sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
-
+    const cards = getHand(game.user.id);
     return {
-      empty: sorted.length === 0,
-      cards: sorted.map(c => ({ id: c.id, name: c.name, img: cardImage(c) }))
+      empty: cards.length === 0,
+      cards: cards.map(c => {
+        const def = getCardDef(c.cardId);
+        return { id: c.instanceId, name: def?.name ?? c.cardId, img: def?.img };
+      })
     };
   }
 }

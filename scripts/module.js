@@ -1,6 +1,9 @@
 import { MODULE_ID } from "./constants.js";
 import { CartesCatsDealer } from "./dealer-app.js";
 import { CartesCatsHandApp } from "./hand-app.js";
+import { ensureInitialized } from "./deck-state.js";
+
+const DECK_STATE_KEY = `${MODULE_ID}.deckState`;
 
 let dealerApp = null;
 let handApp = null;
@@ -20,11 +23,18 @@ function openHand() {
 }
 
 Hooks.once("init", () => {
+  game.settings.register(MODULE_ID, "deckState", {
+    scope: "world",
+    config: false,
+    type: Object,
+    default: { drawPile: [], hands: {} }
+  });
+
   game.settings.register(MODULE_ID, "lastConfig", {
     scope: "world",
     config: false,
     type: Object,
-    default: { deckId: null, count: 1, participantIds: [] }
+    default: { count: 1, participantIds: [] }
   });
 
   game.keybindings.register(MODULE_ID, "openDealer", {
@@ -50,6 +60,8 @@ Hooks.once("init", () => {
 Hooks.once("ready", () => {
   const api = { openDealer, openHand };
   game.modules.get(MODULE_ID).api = api;
+
+  if (game.user.isGM) ensureInitialized();
 });
 
 Hooks.on("renderCardsDirectory", (_app, html) => {
@@ -76,12 +88,8 @@ Hooks.on("renderCardsDirectory", (_app, html) => {
   }
 });
 
-function onCardsChanged(doc) {
-  if (doc.type !== "hand" && doc.type !== "deck") return;
+Hooks.on("updateSetting", setting => {
+  if (setting.key !== DECK_STATE_KEY) return;
   if (dealerApp?.rendered) dealerApp.render();
-  if (handApp?.rendered && doc.getFlag(MODULE_ID, "ownerId") === game.user.id) handApp.render();
-}
-
-Hooks.on("createCards", onCardsChanged);
-Hooks.on("updateCards", onCardsChanged);
-Hooks.on("deleteCards", onCardsChanged);
+  if (handApp?.rendered) handApp.render();
+});
