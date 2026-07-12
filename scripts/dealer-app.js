@@ -1,4 +1,5 @@
-const MODULE_ID = "cartes-cats";
+import { MODULE_ID } from "./constants.js";
+import { findHand, getOrCreateHand } from "./hand-utils.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -49,12 +50,21 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
       avatar: u.avatar || "icons/svg/mystery-man.svg",
       active: u.active
     });
+    const toParticipantEntry = u => {
+      const hand = findHand(u.id);
+      const cards = hand?.cards?.contents ?? [];
+      return {
+        ...toEntry(u),
+        cardCount: cards.length,
+        cardNames: cards.map(c => c.name).join(", ")
+      };
+    };
 
     return {
       decks: decks.map(d => ({ id: d.id, name: d.name, selected: d.id === this.deckId })),
       count: this.count,
       available: available.map(toEntry),
-      participants: participants.map(toEntry),
+      participants: participants.map(toParticipantEntry),
       noDeck: decks.length === 0
     };
   }
@@ -147,27 +157,12 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     for (const userId of this.participantIds) {
       const user = game.users.get(userId);
       if (!user) continue;
-      hands.push(await this.#getOrCreateHand(user));
+      hands.push(await getOrCreateHand(user));
     }
     if (!hands.length) return;
 
     await deck.deal(hands, this.count, { how: CONST.CARD_DRAW_MODE.TOP });
     ui.notifications.info(game.i18n.format("CARTESCATS.Dealt", { count: this.count, n: hands.length }));
-  }
-
-  async #getOrCreateHand(user) {
-    let hand = game.cards.find(c => c.type === "hand" && c.getFlag(MODULE_ID, "ownerId") === user.id);
-    if (!hand) {
-      hand = await Cards.create({
-        name: game.i18n.format("CARTESCATS.HandOf", { name: user.name }),
-        type: "hand",
-        ownership: {
-          default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE,
-          [user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
-        },
-        flags: { [MODULE_ID]: { ownerId: user.id } }
-      });
-    }
-    return hand;
+    this.render();
   }
 }

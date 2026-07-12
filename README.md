@@ -10,6 +10,8 @@ Module Foundry VTT (v13/v14) qui ajoute un espace MJ pour mélanger un paquet de
 - Réglage du nombre de cartes à distribuer par joueur.
 - Animation de mélange à l'écran avant la distribution réelle.
 - Distribution qui crée/alimente automatiquement la main de chaque joueur sélectionné.
+- Récapitulatif (nombre de cartes reçues par participant) visible dans la fenêtre du MJ.
+- Popup "Ma main" (bouton dans l'onglet Cartes, ou raccourci `Ctrl+Shift+M`) que chaque joueur ouvre lui-même : fenêtre persistante, propre au module, qui affiche l'état actuel de sa main (cumul des distributions successives) sans passer par la fiche native de Foundry.
 - Dernière configuration (paquet, participants, nombre de cartes) sauvegardée par monde.
 
 ## Installation
@@ -26,6 +28,7 @@ https://github.com/tomjdr4-hub/Cartes-Cats/releases/latest/download/module.json
 2. Ouvrez la fenêtre de distribution (bouton dans l'onglet Cartes, ou `Ctrl+Shift+C`).
 3. Choisissez le paquet, glissez les joueurs présents dans "Participants", réglez le nombre de cartes.
 4. Cliquez sur **Mélanger** puis sur **Distribuer**.
+5. Chaque joueur ouvre sa popup "Ma main" (bouton ou `Ctrl+Shift+M`) pour voir ses cartes reçues.
 
 ## Versions
 

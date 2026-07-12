@@ -1,0 +1,14 @@
+<div class="cartes-cats-hand">
+  {{#if empty}}
+  <p class="cc-empty">{{localize "CARTESCATS.NoCardsYet"}}</p>
+  {{else}}
+  <ul class="cc-hand-grid">
+    {{#each cards}}
+    <li class="cc-hand-card">
+      <img src="{{this.img}}" alt="{{this.name}}" />
+      <span>{{this.name}}</span>
+    </li>
+    {{/each}}
+  </ul>
+  {{/if}}
+</div>

@@ -33,9 +33,10 @@
       <h3>{{localize "CARTESCATS.Participants"}}</h3>
       <ul class="cc-player-list">
         {{#each participants}}
-        <li class="cc-player" draggable="true" data-user-id="{{this.id}}">
+        <li class="cc-player" draggable="true" data-user-id="{{this.id}}" title="{{this.cardNames}}">
           <img src="{{this.avatar}}" alt="" />
           <span>{{this.name}}</span>
+          {{#if this.cardCount}}<span class="cc-recap-badge">{{this.cardCount}}</span>{{/if}}
         </li>
         {{/each}}
       </ul>
