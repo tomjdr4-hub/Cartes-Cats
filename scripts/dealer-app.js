@@ -28,8 +28,11 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
   constructor(options = {}) {
     super(options);
     const saved = game.settings.get(MODULE_ID, "lastConfig");
-    this.count = saved.count ?? 1;
     this.participantIds = new Set(saved.participantIds ?? []);
+    this.participantCounts = new Map(Object.entries(saved.counts ?? {}));
+    for (const id of this.participantIds) {
+      if (!this.participantCounts.has(id)) this.participantCounts.set(id, 1);
+    }
   }
 
   async _prepareContext(_options) {
@@ -46,13 +49,13 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     });
     const toParticipantEntry = u => ({
       ...toEntry(u),
+      count: this.participantCounts.get(u.id) ?? 1,
       cardCount: (state.hands[u.id] ?? []).length
     });
 
     return {
       cardBack: CARD_BACK,
       remaining: state.drawPile.length,
-      count: this.count,
       available: available.map(toEntry),
       participants: participants.map(toParticipantEntry)
     };
@@ -62,9 +65,14 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     super._onRender(context, options);
     const root = this.element;
 
-    root.querySelector("input[name=count]")?.addEventListener("change", ev => {
-      this.count = Math.max(1, Number(ev.target.value) || 1);
-      this.#persist();
+    root.querySelectorAll(".cc-participant-count").forEach(input => {
+      input.addEventListener("change", ev => {
+        const userId = ev.target.dataset.userId;
+        this.participantCounts.set(userId, Math.max(1, Number(ev.target.value) || 1));
+        this.#persist();
+      });
+      input.addEventListener("click", ev => ev.stopPropagation());
+      input.addEventListener("dragstart", ev => ev.stopPropagation());
     });
 
     for (const zone of root.querySelectorAll("[data-zone]")) {
@@ -73,8 +81,12 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
         ev.preventDefault();
         const userId = ev.dataTransfer.getData("text/plain");
         if (!userId) return;
-        if (zone.dataset.zone === "participants") this.participantIds.add(userId);
-        else this.participantIds.delete(userId);
+        if (zone.dataset.zone === "participants") {
+          this.participantIds.add(userId);
+          if (!this.participantCounts.has(userId)) this.participantCounts.set(userId, 1);
+        } else {
+          this.participantIds.delete(userId);
+        }
         this.#persist();
         this.render();
       });
@@ -84,10 +96,15 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
       li.addEventListener("dragstart", ev => {
         ev.dataTransfer.setData("text/plain", li.dataset.userId);
       });
-      li.addEventListener("dblclick", () => {
+      li.addEventListener("dblclick", ev => {
+        if (ev.target.closest(".cc-participant-count")) return;
         const id = li.dataset.userId;
-        if (this.participantIds.has(id)) this.participantIds.delete(id);
-        else this.participantIds.add(id);
+        if (this.participantIds.has(id)) {
+          this.participantIds.delete(id);
+        } else {
+          this.participantIds.add(id);
+          if (!this.participantCounts.has(id)) this.participantCounts.set(id, 1);
+        }
         this.#persist();
         this.render();
       });
@@ -96,8 +113,8 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
 
   #persist() {
     game.settings.set(MODULE_ID, "lastConfig", {
-      count: this.count,
-      participantIds: Array.from(this.participantIds)
+      participantIds: Array.from(this.participantIds),
+      counts: Object.fromEntries(this.participantCounts)
     });
   }
 
@@ -125,12 +142,17 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
       return;
     }
 
-    const dealt = await dealCards(Array.from(this.participantIds), this.count);
-    const totalDealt = Object.values(dealt).reduce((a, b) => a + b, 0);
-    const short = totalDealt < this.count * this.participantIds.size;
+    const distribution = {};
+    for (const id of this.participantIds) {
+      distribution[id] = this.participantCounts.get(id) ?? 1;
+    }
 
-    ui.notifications.info(game.i18n.format("CARTESCATS.Dealt", { count: this.count, n: this.participantIds.size }));
-    if (short) ui.notifications.warn(game.i18n.localize("CARTESCATS.PileTooShort"));
+    const dealt = await dealCards(distribution);
+    const requestedTotal = Object.values(distribution).reduce((a, b) => a + b, 0);
+    const dealtTotal = Object.values(dealt).reduce((a, b) => a + b, 0);
+
+    ui.notifications.info(game.i18n.format("CARTESCATS.Dealt", { n: this.participantIds.size }));
+    if (dealtTotal < requestedTotal) ui.notifications.warn(game.i18n.localize("CARTESCATS.PileTooShort"));
 
     this.render();
   }

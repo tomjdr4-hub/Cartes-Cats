@@ -35,10 +35,10 @@ export async function shuffleDrawPile() {
   await setState(state);
 }
 
-export async function dealCards(userIds, count) {
+export async function dealCards(distribution) {
   const state = getState();
   const dealt = {};
-  for (const userId of userIds) {
+  for (const [userId, count] of Object.entries(distribution)) {
     const hand = state.hands[userId] ?? (state.hands[userId] = []);
     const taken = state.drawPile.splice(0, count);
     hand.push(...taken);
@@ -46,6 +46,13 @@ export async function dealCards(userIds, count) {
   }
   await setState(state);
   return dealt;
+}
+
+export async function discardCard(userId, instanceId) {
+  const state = getState();
+  const hand = state.hands[userId] ?? [];
+  state.hands[userId] = hand.filter(c => c.instanceId !== instanceId);
+  await setState(state);
 }
 
 export function getHand(userId) {

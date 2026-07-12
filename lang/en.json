@@ -17,8 +17,10 @@
     "NoParticipants": "Drag at least one player into the participants.",
     "PileTooShort": "There weren't enough cards left in the deck to deal the requested amount to everyone.",
     "Shuffled": "The deck has been shuffled.",
-    "Dealt": "{count} card(s) dealt to {n} player(s).",
+    "Dealt": "Cards dealt to {n} player(s).",
     "MyHandTitle": "My hand",
-    "NoCardsYet": "You haven't received any cards yet."
+    "NoCardsYet": "You haven't received any cards yet.",
+    "UseCard": "Use",
+    "UsedCard": "{name} uses the {card} card."
   }
 }

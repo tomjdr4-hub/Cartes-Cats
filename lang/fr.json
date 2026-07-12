@@ -17,8 +17,10 @@
     "NoParticipants": "Faites glisser au moins un joueur dans les participants.",
     "PileTooShort": "Il ne restait pas assez de cartes dans le paquet pour distribuer le nombre demandé à tout le monde.",
     "Shuffled": "Le paquet a été mélangé.",
-    "Dealt": "{count} carte(s) distribuée(s) à {n} joueur(s).",
+    "Dealt": "Cartes distribuées à {n} joueur(s).",
     "MyHandTitle": "Ma main",
-    "NoCardsYet": "Vous n'avez pas encore reçu de cartes."
+    "NoCardsYet": "Vous n'avez pas encore reçu de cartes.",
+    "UseCard": "Utiliser",
+    "UsedCard": "{name} utilise la carte {card}."
   }
 }

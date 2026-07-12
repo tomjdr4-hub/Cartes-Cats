@@ -8,12 +8,13 @@ Le paquet, la pioche, le mélange et les mains des joueurs sont gérés **entiè
 
 - Fenêtre "Distribution de cartes" réservée au MJ (bouton dans l'onglet Cartes, ou raccourci `Ctrl+Shift+C`).
 - Glisser-déposer des joueurs entre "Joueurs disponibles" et "Participants" (double-clic possible en alternative).
-- Réglage du nombre de cartes à distribuer par joueur.
+- Nombre de cartes à distribuer réglable **individuellement pour chaque participant**.
 - Animation de mélange à l'écran (avec le vrai visuel du verso) avant la distribution réelle.
 - Compteur de cartes restantes dans la pioche + bouton pour réinitialiser/remélanger le paquet complet.
 - Récapitulatif (nombre de cartes reçues par participant) visible dans la fenêtre du MJ.
-- Popup "Ma main" (bouton dans l'onglet Cartes, ou raccourci `Ctrl+Shift+M`) que chaque joueur ouvre lui-même : fenêtre persistante, propre au module, qui affiche l'état actuel de sa main (cumul des distributions successives).
-- Dernière configuration (participants, nombre de cartes) sauvegardée par monde.
+- Popup "Ma main" ouverte par le joueur via un mini-visuel de carte flottant, ancré au-dessus de la liste des joueurs (badge du nombre de cartes en main) — pas de dépendance à un onglet de la sidebar. Raccourci `Ctrl+Shift+M` disponible aussi.
+- Bouton **Utiliser** sur chaque carte de la main : défausse la carte et annonce son usage dans le chat.
+- Dernière configuration (participants, nombre de cartes par joueur) sauvegardée par monde.
 
 ## Le paquet de cartes
 
@@ -21,6 +22,7 @@ Le contenu du paquet est défini dans [scripts/deck-data.js](scripts/deck-data.j
 
 - Verso : `assets/cards/back.png`
 - **Coup d'bol** (`assets/cards/coupdbol.png`) — 3 exemplaires
+- **Pas d'bol** (`assets/cards/pasdbol.png`) — 3 exemplaires
 
 Pour ajouter de nouvelles cartes, il suffit de déposer les visuels dans `assets/cards/` et d'ajouter une entrée dans `CARD_DEFINITIONS`.
 
@@ -35,9 +37,9 @@ https://github.com/tomjdr4-hub/Cartes-Cats/releases/latest/download/module.json
 ## Utilisation
 
 1. Ouvrez la fenêtre de distribution (bouton dans l'onglet Cartes, ou `Ctrl+Shift+C`).
-2. Glissez les joueurs présents dans "Participants", réglez le nombre de cartes.
+2. Glissez les joueurs présents dans "Participants", réglez le nombre de cartes pour chacun.
 3. Cliquez sur **Mélanger** puis sur **Distribuer**.
-4. Chaque joueur ouvre sa popup "Ma main" (bouton ou `Ctrl+Shift+M`) pour voir ses cartes reçues.
+4. Chaque joueur clique sur le mini-visuel de carte flottant (au-dessus de la liste des joueurs) pour voir ses cartes reçues, et clique sur **Utiliser** pour défausser une carte après l'avoir jouée.
 
 ## Versions
 
@@ -45,4 +47,4 @@ Une nouvelle version (numéro de patch incrémenté) et une release GitHub (avec
 
 ## Statut
 
-Mécanique indépendante fonctionnelle (pioche, mélange, distribution, récapitulatif MJ, main persistante par joueur) avec un premier vrai visuel ("Coup d'bol" + verso). D'autres cartes pourront être ajoutées au fur et à mesure des visuels fournis.
+Mécanique indépendante fonctionnelle (pioche, mélange, distribution par joueur, récapitulatif MJ, main persistante par joueur, défausse à l'usage) avec deux visuels réels ("Coup d'bol", "Pas d'bol" + verso). D'autres cartes pourront être ajoutées au fur et à mesure des visuels fournis.

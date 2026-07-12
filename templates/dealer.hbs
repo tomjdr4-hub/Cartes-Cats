@@ -10,11 +10,6 @@
     </div>
   </div>
 
-  <div class="cc-row cc-count">
-    <label>{{localize "CARTESCATS.CardsPerPlayer"}}</label>
-    <input type="number" name="count" min="1" value="{{count}}" />
-  </div>
-
   <div class="cc-columns">
     <div class="cc-column cc-available" data-zone="available">
       <h3>{{localize "CARTESCATS.AvailablePlayers"}}</h3>
@@ -34,6 +29,7 @@
         <li class="cc-player" draggable="true" data-user-id="{{this.id}}">
           <img src="{{this.avatar}}" alt="" />
           <span>{{this.name}}</span>
+          <input type="number" class="cc-participant-count" min="1" value="{{this.count}}" data-user-id="{{this.id}}" title="{{localize 'CARTESCATS.CardsPerPlayer'}}" />
           {{#if this.cardCount}}<span class="cc-recap-badge">{{this.cardCount}}</span>{{/if}}
         </li>
         {{/each}}

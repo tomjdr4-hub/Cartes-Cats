@@ -1,6 +1,6 @@
 import { MODULE_ID } from "./constants.js";
 import { getCardDef } from "./deck-data.js";
-import { getHand } from "./deck-state.js";
+import { getHand, discardCard } from "./deck-state.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -12,7 +12,10 @@ export class CartesCatsHandApp extends HandlebarsApplicationMixin(ApplicationV2)
       icon: "fa-solid fa-hand-holding",
       resizable: true
     },
-    position: { width: 480, height: "auto" }
+    position: { width: 480, height: "auto" },
+    actions: {
+      use: CartesCatsHandApp.#onUse
+    }
   };
 
   static PARTS = {
@@ -28,5 +31,21 @@ export class CartesCatsHandApp extends HandlebarsApplicationMixin(ApplicationV2)
         return { id: c.instanceId, name: def?.name ?? c.cardId, img: def?.img };
       })
     };
+  }
+
+  static async #onUse(_event, target) {
+    const instanceId = target.dataset.instanceId;
+    const card = getHand(game.user.id).find(c => c.instanceId === instanceId);
+    if (!card) return;
+
+    const def = getCardDef(card.cardId);
+    await discardCard(game.user.id, instanceId);
+
+    ChatMessage.create({
+      content: game.i18n.format("CARTESCATS.UsedCard", { name: game.user.name, card: def?.name ?? card.cardId }),
+      speaker: ChatMessage.getSpeaker({ user: game.user })
+    });
+
+    this.render();
   }
 }

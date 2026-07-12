@@ -8,6 +8,12 @@ export const CARD_DEFINITIONS = [
     name: "Coup d'bol",
     img: `modules/${MODULE_ID}/assets/cards/coupdbol.png`,
     count: 3
+  },
+  {
+    id: "pasdbol",
+    name: "Pas d'bol",
+    img: `modules/${MODULE_ID}/assets/cards/pasdbol.png`,
+    count: 3
   }
 ];
 
