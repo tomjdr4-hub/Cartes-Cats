@@ -1,0 +1,20 @@
+{
+  "CARTESCATS": {
+    "AppTitle": "Deal cards",
+    "OpenDealer": "Deal cards",
+    "GMOnly": "Only the Game Master can open the card dealer.",
+    "Deck": "Deck",
+    "CardsPerPlayer": "Cards per player",
+    "AvailablePlayers": "Available players",
+    "Participants": "Participants",
+    "DragHint": "Drag a player from one column to the other to add or remove them from the participants (double-click also works).",
+    "Shuffle": "Shuffle",
+    "Deal": "Deal",
+    "NoDeckSelected": "Select a card deck first.",
+    "NoDeckInWorld": "No card deck found in this world. Create one from the Cards tab.",
+    "NoParticipants": "Drag at least one player into the participants.",
+    "Shuffled": "The {deck} deck has been shuffled.",
+    "Dealt": "{count} card(s) dealt to {n} player(s).",
+    "HandOf": "{name}'s hand"
+  }
+}

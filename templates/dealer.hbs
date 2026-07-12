@@ -1,0 +1,58 @@
+<div class="cartes-cats-dealer">
+  {{#if noDeck}}
+  <p class="cc-warning">{{localize "CARTESCATS.NoDeckInWorld"}}</p>
+  {{/if}}
+
+  <div class="cc-row cc-deck-select">
+    <label>{{localize "CARTESCATS.Deck"}}</label>
+    <select name="deckId">
+      {{#each decks}}
+      <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <div class="cc-row cc-count">
+    <label>{{localize "CARTESCATS.CardsPerPlayer"}}</label>
+    <input type="number" name="count" min="1" value="{{count}}" />
+  </div>
+
+  <div class="cc-columns">
+    <div class="cc-column cc-available" data-zone="available">
+      <h3>{{localize "CARTESCATS.AvailablePlayers"}}</h3>
+      <ul class="cc-player-list">
+        {{#each available}}
+        <li class="cc-player" draggable="true" data-user-id="{{this.id}}">
+          <img src="{{this.avatar}}" alt="" />
+          <span>{{this.name}}</span>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="cc-column cc-participants" data-zone="participants">
+      <h3>{{localize "CARTESCATS.Participants"}}</h3>
+      <ul class="cc-player-list">
+        {{#each participants}}
+        <li class="cc-player" draggable="true" data-user-id="{{this.id}}">
+          <img src="{{this.avatar}}" alt="" />
+          <span>{{this.name}}</span>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+
+  <p class="cc-hint">{{localize "CARTESCATS.DragHint"}}</p>
+
+  <div class="cc-shuffle-stage" hidden>
+    <div class="cc-card cc-card-1"></div>
+    <div class="cc-card cc-card-2"></div>
+    <div class="cc-card cc-card-3"></div>
+    <div class="cc-card cc-card-4"></div>
+  </div>
+
+  <footer class="cc-actions">
+    <button type="button" data-action="shuffle"><i class="fa-solid fa-shuffle"></i> {{localize "CARTESCATS.Shuffle"}}</button>
+    <button type="button" data-action="deal"><i class="fa-solid fa-hand-holding"></i> {{localize "CARTESCATS.Deal"}}</button>
+  </footer>
+</div>

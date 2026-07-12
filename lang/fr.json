@@ -1,0 +1,20 @@
+{
+  "CARTESCATS": {
+    "AppTitle": "Distribution de cartes",
+    "OpenDealer": "Distribuer des cartes",
+    "GMOnly": "Seul le Maître du Jeu peut ouvrir la distribution de cartes.",
+    "Deck": "Paquet",
+    "CardsPerPlayer": "Cartes par joueur",
+    "AvailablePlayers": "Joueurs disponibles",
+    "Participants": "Participants",
+    "DragHint": "Glissez un joueur d'une colonne à l'autre pour l'ajouter ou le retirer des participants (double-clic possible aussi).",
+    "Shuffle": "Mélanger",
+    "Deal": "Distribuer",
+    "NoDeckSelected": "Sélectionnez d'abord un paquet de cartes.",
+    "NoDeckInWorld": "Aucun paquet de cartes trouvé dans ce monde. Créez-en un dans l'onglet Cartes.",
+    "NoParticipants": "Faites glisser au moins un joueur dans les participants.",
+    "Shuffled": "Le paquet {deck} a été mélangé.",
+    "Dealt": "{count} carte(s) distribuée(s) à {n} joueur(s).",
+    "HandOf": "Main de {name}"
+  }
+}
