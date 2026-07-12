@@ -21,8 +21,18 @@ Le paquet et la pioche sont gérés **entièrement par le module** (réglage de 
 Le contenu du paquet est défini dans [scripts/deck-data.js](scripts/deck-data.js) : chaque carte a un identifiant, un nom, une image et un nombre d'exemplaires dans le paquet. Actuellement :
 
 - Verso : `assets/cards/back.png`
-- **Coup d'bol** (`assets/cards/coupdbol.png`) — 3 exemplaires
-- **Pas d'bol** (`assets/cards/pasdbol.png`) — 3 exemplaires
+- **Coup d'bol** — 3 exemplaires
+- **Pas d'bol** — 3 exemplaires
+- **Megamind** — 1 exemplaire
+- **Trop mignon !** — 2 exemplaires
+- **Prends ça !** — 1 exemplaire
+- **Ravitaillement** — 2 exemplaires (ne se défausse pas à l'usage : effet différent lié à la défausse)
+- **@#\*%& de chat !** — 2 exemplaires
+- **Esclave à disposition** — 1 exemplaire
+- **Même pas mal !** — 2 exemplaires
+- **C'est pas moi, c'est lui !** — 1 exemplaire
+- **Retournement de situation** — 1 exemplaire
+- **Faveur due** — 1 exemplaire
 
 Pour ajouter de nouvelles cartes, il suffit de déposer les visuels dans `assets/cards/` et d'ajouter une entrée dans `CARD_DEFINITIONS`.
 
@@ -47,4 +57,4 @@ Une nouvelle version (numéro de patch incrémenté) et une release GitHub (avec
 
 ## Statut
 
-Mécanique indépendante fonctionnelle (pioche, mélange, distribution par joueur, récapitulatif MJ, main persistante par joueur, défausse à l'usage) avec deux visuels réels ("Coup d'bol", "Pas d'bol" + verso). D'autres cartes pourront être ajoutées au fur et à mesure des visuels fournis.
+Mécanique indépendante fonctionnelle (pioche, mélange, distribution par joueur, récapitulatif MJ, main persistante par joueur, défausse à l'usage) avec 12 cartes réelles + verso. D'autres cartes pourront être ajoutées au fur et à mesure des visuels fournis.
