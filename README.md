@@ -7,7 +7,7 @@ Le paquet et la pioche sont gérés **entièrement par le module** (réglage de 
 ## Fonctionnalités
 
 - Fenêtre "Distribution de cartes" réservée au MJ (bouton dans l'onglet Cartes, ou raccourci `Ctrl+Shift+C`).
-- Glisser-déposer des joueurs entre "Joueurs disponibles" et "Participants" (double-clic possible en alternative).
+- Glisser-déposer des joueurs entre "Joueurs disponibles" et "Participants" (double-clic possible en alternative) — affichés par **nom de personnage assigné (+ réputation entre parenthèses)** plutôt que par nom de compte joueur, avec repli sur le nom du joueur si aucun personnage n'est assigné.
 - Nombre de cartes à distribuer réglable **individuellement pour chaque participant**.
 - Animation de mélange à l'écran (avec le vrai visuel du verso) avant la distribution réelle.
 - Compteur de cartes restantes dans la pioche + bouton pour réinitialiser/remélanger le paquet complet.

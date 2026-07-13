@@ -41,12 +41,17 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     const users = game.users.filter(u => !u.isGM);
     const available = users.filter(u => !this.participantIds.has(u.id));
     const participants = users.filter(u => this.participantIds.has(u.id));
-    const toEntry = u => ({
-      id: u.id,
-      name: u.name,
-      avatar: u.avatar || "icons/svg/mystery-man.svg",
-      active: u.active
-    });
+    const toEntry = u => {
+      const actor = u.character;
+      const reputation = actor?.system?.identity?.reputation;
+      const name = actor ? (reputation !== undefined ? `${actor.name} (${reputation})` : actor.name) : u.name;
+      return {
+        id: u.id,
+        name,
+        avatar: actor?.img || u.avatar || "icons/svg/mystery-man.svg",
+        active: u.active
+      };
+    };
     const toParticipantEntry = u => {
       const hand = getHand(u.id);
       return {
