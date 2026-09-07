@@ -3,6 +3,7 @@
   "title": "Cartes & Chats - Distribution",
   "description": "Un espace MJ pour mélanger un paquet de cartes et le distribuer aux joueurs présents, avec sélection des participants par glisser-déposer.",
   "version": "0.1.12",
+  "socket": true,
   "compatibility": {
     "minimum": "13",
     "verified": "14",

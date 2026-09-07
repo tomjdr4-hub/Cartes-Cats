@@ -2,11 +2,6 @@
   padding: 0.25rem 0.5rem 0.5rem;
 }
 
-.cartes-cats-dealer .cc-warning {
-  color: #b5443b;
-  font-weight: bold;
-}
-
 .cartes-cats-dealer .cc-row {
   display: flex;
   align-items: center;
@@ -302,8 +297,14 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
 }
 
-.cartes-cats-hand .cc-hand-card button {
+.cartes-cats-hand .cc-hand-card-actions {
+  display: flex;
+  gap: 0.35rem;
   width: 100%;
+}
+
+.cartes-cats-hand .cc-hand-card-actions button {
+  flex: 1;
 }
 
 .cartes-cats-chat-card {
@@ -323,4 +324,80 @@
 .cartes-cats-chat-card p {
   margin: 0;
   font-style: italic;
+}
+
+.cc-trade-offer-dialog {
+  text-align: center;
+  padding: 0.25rem 0.5rem 0.5rem;
+}
+
+.cc-trade-offer-dialog .cc-trade-offer-img {
+  width: 160px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 3px solid #d4af37;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  margin-bottom: 0.5rem;
+}
+
+.cc-trade-offer-dialog .form-group {
+  text-align: left;
+  margin-top: 0.5rem;
+}
+
+.cc-trade-offer-dialog .cc-warning,
+.cartes-cats-dealer .cc-warning {
+  color: #b5443b;
+  font-weight: bold;
+}
+
+.cc-trade-form .form-group {
+  text-align: left;
+}
+
+.cartes-cats-card-config {
+  padding: 0.25rem 0.5rem 0.5rem;
+}
+
+.cartes-cats-card-config .cc-hint {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin: 0 0 0.5rem;
+}
+
+.cartes-cats-card-config .cc-config-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cartes-cats-card-config .cc-config-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.cartes-cats-card-config .cc-config-row img {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #d4af37;
+  flex: 0 0 auto;
+}
+
+.cartes-cats-card-config .cc-config-name {
+  flex: 1;
+}
+
+.cartes-cats-card-config .cc-config-actions {
+  display: flex;
+  gap: 0.35rem;
 }

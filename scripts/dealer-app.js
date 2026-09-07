@@ -1,5 +1,7 @@
 import { MODULE_ID } from "./constants.js";
-import { CARD_BACK, getCardDef } from "./deck-data.js";
+import { getCardDef } from "./deck-data.js";
+import { getCardBackImage } from "./card-config.js";
+import { CartesCatsCardConfigApp } from "./card-config-app.js";
 import { getState, getHand, resetDeck, shuffleDrawPile, dealCards } from "./deck-state.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -17,7 +19,8 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     actions: {
       shuffle: CartesCatsDealer.#onShuffle,
       deal: CartesCatsDealer.#onDeal,
-      reset: CartesCatsDealer.#onReset
+      reset: CartesCatsDealer.#onReset,
+      configureImages: CartesCatsDealer.#onConfigureImages
     }
   };
 
@@ -63,7 +66,7 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     };
 
     return {
-      cardBack: CARD_BACK,
+      cardBack: getCardBackImage(),
       remaining: state.drawPile.length,
       available: available.map(toEntry),
       participants: participants.map(toParticipantEntry)
@@ -180,5 +183,9 @@ export class CartesCatsDealer extends HandlebarsApplicationMixin(ApplicationV2) 
     await resetDeck();
     ui.notifications.info(game.i18n.localize("CARTESCATS.DeckReset"));
     this.render();
+  }
+
+  static #onConfigureImages(_event, _target) {
+    new CartesCatsCardConfigApp().render(true);
   }
 }

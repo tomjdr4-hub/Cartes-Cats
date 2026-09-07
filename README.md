@@ -14,6 +14,8 @@ Le paquet et la pioche sont gérés **entièrement par le module** (réglage de 
 - Récapitulatif visible dans la fenêtre du MJ : nombre de cartes reçues par participant, et **le nom de chaque carte en sa possession** juste sous son nom.
 - Popup "Ma main" ouverte par le joueur via un mini-visuel de carte flottant, ancré au-dessus de la liste des joueurs (badge du nombre de cartes en main) — pas de dépendance à un onglet de la sidebar. Raccourci `Ctrl+Shift+M` disponible aussi.
 - Bouton **Utiliser** sur chaque carte de la main : défausse la carte et annonce son usage dans le chat.
+- Bouton **Échanger** sur chaque carte de la main : le joueur propose la carte à un autre joueur connecté, qui choisit une de ses propres cartes à donner en retour et accepte ou refuse. L'échange se conclut instantanément, sans intervention du MJ (mais les **deux joueurs doivent être connectés** le temps de la négociation). Un message de chat annonce l'échange conclu.
+- Le MJ peut **personnaliser les images des cartes** (et le dos du paquet) depuis la fenêtre de distribution (bouton "Personnaliser les images") : sélecteur de fichier Foundry par carte, avec réinitialisation possible vers le visuel d'origine.
 - Dernière configuration (participants, nombre de cartes par joueur) sauvegardée par monde.
 
 ## Le paquet de cartes
@@ -59,6 +61,9 @@ https://github.com/tomjdr4-hub/Cartes-Cats/releases/latest/download/module.json
 2. Glissez les joueurs présents dans "Participants", réglez le nombre de cartes pour chacun.
 3. Cliquez sur **Mélanger** puis sur **Distribuer** (bloqué avec un avertissement si le total demandé dépasse le nombre de cartes restantes dans la pioche).
 4. Chaque joueur clique sur le mini-visuel de carte flottant (au-dessus de la liste des joueurs) pour voir ses cartes reçues, et clique sur **Utiliser** pour défausser une carte après l'avoir jouée (uniquement si la carte l'exige).
+5. Pour échanger une carte, un joueur clique sur **Échanger**, choisit un autre joueur connecté ; celui-ci reçoit une popup, choisit une carte à donner en retour, puis accepte ou refuse.
+
+> Comme la main de chaque joueur est un flag sur son propre compte, un échange ne peut se faire qu'en direct entre les deux comptes concernés (chacun applique la modification sur sa propre main) : **les deux joueurs doivent rester connectés** le temps que l'autre réponde. Aucun MJ n'est requis pour valider un échange.
 
 ## Versions
 

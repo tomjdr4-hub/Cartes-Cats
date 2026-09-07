@@ -2,9 +2,12 @@ import { MODULE_ID } from "./constants.js";
 import { CartesCatsDealer } from "./dealer-app.js";
 import { CartesCatsHandApp } from "./hand-app.js";
 import { ensureInitialized, getHand, getState } from "./deck-state.js";
-import { CARD_BACK } from "./deck-data.js";
+import { getCardDef } from "./deck-data.js";
+import { getCardBackImage, getCardImage, registerCardConfigSettings } from "./card-config.js";
+import { acceptTradeOffer, declineTradeOffer, registerTradeSocket } from "./trade.js";
 
 const DECK_STATE_KEY = `${MODULE_ID}.deckState`;
+const CARD_IMAGE_OVERRIDES_KEY = `${MODULE_ID}.cardImageOverrides`;
 
 let dealerApp = null;
 let handApp = null;
@@ -29,7 +32,7 @@ function createHandWidget() {
   const widget = document.createElement("div");
   widget.id = "cartes-cats-hand-widget";
   widget.title = game.i18n.localize(game.user.isGM ? "CARTESCATS.OpenDealer" : "CARTESCATS.MyHandTitle");
-  widget.innerHTML = `<img src="${CARD_BACK}" alt="" /><span class="cc-widget-badge" hidden></span>`;
+  widget.innerHTML = `<img src="${getCardBackImage()}" alt="" /><span class="cc-widget-badge" hidden></span>`;
   widget.addEventListener("click", () => (game.user.isGM ? openDealer() : openHand()));
   document.body.append(widget);
 
@@ -76,6 +79,8 @@ Hooks.once("init", () => {
     default: { count: 1, participantIds: [] }
   });
 
+  registerCardConfigSettings();
+
   game.keybindings.register(MODULE_ID, "openDealer", {
     name: "CARTESCATS.OpenDealer",
     restricted: true,
@@ -96,11 +101,68 @@ Hooks.once("init", () => {
   });
 });
 
+function showIncomingTradeDialog(offer) {
+  const fromLabel = offer.fromName ?? game.users.get(offer.fromUserId)?.name ?? "?";
+  const cardName = getCardDef(offer.offeredCardId)?.name ?? offer.offeredCardId;
+  const cardImg = getCardImage(offer.offeredCardId);
+  const myCards = getHand(game.user.id);
+
+  const cardOptions = myCards
+    .map(c => `<option value="${c.instanceId}">${foundry.utils.escapeHTML(getCardDef(c.cardId)?.name ?? c.cardId)}</option>`)
+    .join("");
+
+  const content = `
+    <div class="cc-trade-offer-dialog">
+      <img class="cc-trade-offer-img" src="${cardImg}" alt="${cardName}" />
+      <p>${game.i18n.format("CARTESCATS.IncomingTradeLabel", { from: fromLabel, card: cardName })}</p>
+      ${myCards.length
+        ? `<div class="form-group">
+             <label>${game.i18n.localize("CARTESCATS.ChooseCardToGive")}</label>
+             <select name="givenInstanceId">${cardOptions}</select>
+           </div>`
+        : `<p class="cc-warning">${game.i18n.localize("CARTESCATS.NoCardsToGive")}</p>`}
+    </div>
+  `;
+
+  foundry.applications.api.DialogV2.wait({
+    window: { title: game.i18n.localize("CARTESCATS.IncomingTradeTitle") },
+    content,
+    buttons: [
+      {
+        action: "accept",
+        label: game.i18n.localize("CARTESCATS.Accept"),
+        icon: "fa-solid fa-check",
+        disabled: myCards.length === 0,
+        callback: (_ev, button) => {
+          const givenInstanceId = button.form.elements.givenInstanceId?.value;
+          if (givenInstanceId) acceptTradeOffer(offer, givenInstanceId);
+        }
+      },
+      {
+        action: "decline",
+        label: game.i18n.localize("CARTESCATS.Decline"),
+        icon: "fa-solid fa-xmark",
+        callback: () => declineTradeOffer(offer)
+      }
+    ],
+    default: "decline",
+    rejectClose: false
+  });
+}
+
 Hooks.once("ready", () => {
   const api = { openDealer, openHand };
   game.modules.get(MODULE_ID).api = api;
 
   if (game.user.isGM) ensureInitialized();
+
+  registerTradeSocket({
+    onOffer: showIncomingTradeDialog,
+    onDeclined: data => ui.notifications.warn(game.i18n.format("CARTESCATS.TradeDeclinedNotice", {
+      name: data.toName ?? game.users.get(data.toUserId)?.name ?? "?",
+      card: getCardDef(data.offeredCardId)?.name ?? data.offeredCardId
+    }))
+  });
 
   createHandWidget();
 });
@@ -122,6 +184,11 @@ Hooks.on("renderCardsDirectory", (_app, html) => {
 Hooks.on("renderPlayerList", () => positionHandWidget());
 window.addEventListener("resize", () => positionHandWidget());
 
+function updateWidgetImage() {
+  const img = document.getElementById("cartes-cats-hand-widget")?.querySelector("img");
+  if (img) img.src = getCardBackImage();
+}
+
 function refreshUI() {
   if (dealerApp?.rendered) dealerApp.render();
   if (handApp?.rendered) handApp.render();
@@ -129,8 +196,12 @@ function refreshUI() {
 }
 
 Hooks.on("updateSetting", setting => {
-  if (setting.key !== DECK_STATE_KEY) return;
-  refreshUI();
+  if (setting.key === DECK_STATE_KEY) {
+    refreshUI();
+  } else if (setting.key === CARD_IMAGE_OVERRIDES_KEY) {
+    updateWidgetImage();
+    refreshUI();
+  }
 });
 
 Hooks.on("updateUser", (_user, changes) => {

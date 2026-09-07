@@ -1,0 +1,15 @@
+<div class="cartes-cats-card-config">
+  <p class="cc-hint">{{localize "CARTESCATS.CardConfigHint"}}</p>
+  <ul class="cc-config-list">
+    {{#each cards}}
+    <li class="cc-config-row" data-card-id="{{this.id}}">
+      <img src="{{this.img}}" alt="{{this.name}}" />
+      <span class="cc-config-name">{{this.name}}</span>
+      <div class="cc-config-actions">
+        <button type="button" data-action="browse" data-card-id="{{this.id}}"><i class="fa-solid fa-image"></i> {{localize "CARTESCATS.ChooseImage"}}</button>
+        <button type="button" data-action="reset" data-card-id="{{this.id}}"><i class="fa-solid fa-rotate-left"></i> {{localize "CARTESCATS.ResetImage"}}</button>
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+</div>
